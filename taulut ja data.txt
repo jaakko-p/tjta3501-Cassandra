@@ -1,0 +1,219 @@
+
+CREATE KEYSPACE mechanics WITH replication = {'class' : 'SimpleStrategy', 'replication_factor' : 1} AND durable_writes = 'true';
+
+CREATE TABLE vehicles_by_make (
+	make,
+	year INT,
+	reg_no VARCHAR,
+	model VARCHAR,
+	type VARCHAR,
+		PRIMARY KEY ((make), reg_no, year, model)
+);
+
+CREATE TABLE customers_by_vehicle (
+	reg_no VARCHAR,
+	fname VARCHAR,
+	sname VARCHAR,
+	phone VARCHAR,
+	email VARCHAR,
+		PRIMARY KEY ((reg_no), sname)
+)
+	WITH CLUSTERING ORDER BY (sname DESC);
+
+CREATE TABLE checkups_by_vehicle (
+	reg_no VARCHAR,
+	date_submitted DATE,
+	reason TEXT,
+	result VARCHAR,
+	cost DECIMAL,
+	details TEXT,
+	employee MAP<TEXT, TEXT>,
+		PRIMARY KEY((reg_no), date_submitted)
+)
+	WITH CLUSTERING ORDER BY (date_submitted DESC);
+
+CREATE TABLE shops (
+	city VARCHAR,
+	address VARCHAR,
+	shop_id UUID,
+	phone VARCHAR,
+	email VARCHAR,
+		PRIMARY KEY ((city), address, shop_id)
+);
+
+CREATE TABLE employees_by_role(
+	role VARCHAR,
+	fname VARCHAR, 	
+	sname VARCHAR,
+	employee_id UUID, 
+	start_date DATE,
+	end_date DATE,
+	employment_type VARCHAR,
+	specialty SET<VARCHAR>,
+	shop_id UUID,
+		PRIMARY KEY((role), fname, sname, employee_id)
+);
+
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Hyundai', 1999, 'ESW-611', 'Sonata', 'Sedan');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('BMW', 2008, 'YWH-785', 'Z4 M', 'Crossover');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('GMC', 2002, 'UTD-972', 'Sierra 3500', 'Convertible');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Volvo', 2004, 'RUF-501', 'V40', 'Convertible');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Pontiac', 1996, 'MSC-273', 'Trans Sport', 'Convertible');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Chrysler', 1993, 'KTW-779', 'LeBaron', 'Crossover');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Nissan', 1992, 'LRJ-604', 'Sentra', 'Sedan');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Honda', 2008, 'WWP-865', 'Pilot', 'Convertible');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Mercury', 2003, 'NAG-721', 'Grand Marquis', 'Convertible');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Chevrolet', 1983, 'RSD-776', 'Caprice', 'Coupe');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Mazda', 1996, 'ESH-479', 'Millenia', 'Convertible');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Lincoln', 2000, 'RVN-177', 'LS', 'SUV');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Ford', 1984, 'WJA-635', 'F150', 'Sedan');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Ford', 2001, 'YSK-123', 'Econoline E250', 'Coupe');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Mercedes', 1993, 'OCJ-921', 'C-Class', 'Crossover');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Chevrolet', 2002, 'PKV-829', 'S10', 'Coupe');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('BMW', 1999, 'KCK-737', '7 Series', 'Convertible');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Pontiac', 1991, 'ASS-776', 'Firefly', 'SUV');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Dodge', 2009, 'YEB-219', 'Ram 2500', 'Convertible');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('GMC', 2006, 'DUT-932', 'Savana 2500', 'Convertible');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('BMW', 2010, 'KAI-598', 'X5 M', 'Sedan');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Mitsubishi', 1992, 'GLG-157', 'Montero', 'Sedan');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Mazda', 2007, 'ZAO-714', 'MX-5', 'Crossover');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Nissan', 2008, 'SKQ-125', '350Z', 'Convertible');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Mazda', 1987, 'GBG-377', 'Familia', 'Crossover');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Audi', 1991, 'NAF-606', 'V8', 'Coupe');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Volkswagen', 2009, 'CUB-594', 'GTI', 'Coupe');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('GMC', 1993, 'SFQ-539', 'Suburban 2500', 'Sedan');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Chevrolet', 2004, 'EPT-908', 'Impala', 'Sedan');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Pontiac', 1999, 'ACY-980', 'Montana', 'SUV');
+insert into vehicles_by_make (make, year, reg_no, model, type) values ('Suzuki', 2010, 'UPV-105', 'SX4', 'Convertible');
+
+
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('ESW-611', 'McHarry', 'Alexis', '865-917-9270', 'amcharry0@va.gov');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('YWH-785', 'Oley', 'Tod', '424-575-6018', 'toley1@live.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('UTD-972', 'Aingel', 'Melisenda', '969-903-2484', 'maingel2@amazon.de');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('RUF-501', 'Northway', 'Jesselyn', '942-214-0919', 'jnorthway3@ustream.tv');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('MSC-273', 'Straughan', 'Audie', '961-473-9823', 'astraughan4@jiathis.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('KTW-779', 'Borrowman', 'Johnny', '496-704-6183', 'jborrowman5@lulu.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('LRJ-604', 'Woodington', 'Calley', '435-731-4064', 'cwoodington6@marketwatch.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('WWP-865', 'Dot', 'Domeniga', '457-994-3199', 'ddot7@free.fr');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('NAG-721', 'Geane', 'Hewet', '622-368-8428', 'hgeane8@pagesperso-orange.fr');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('RSD-776', 'Jealous', 'Dennet', '466-769-5027', 'djealous9@sbwire.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('ESH-479', 'Nerney', 'Patrick', '206-519-4088', 'pnerneya@360.cn');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('RVN-177', 'Wearne', 'Barris', '310-906-0779', 'bwearneb@smugmug.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('WJA-635', 'Bundock', 'Adelind', '329-718-8598', 'abundockc@hao123.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('YSK-123', 'Do Rosario', 'Murial', '249-877-4356', 'mdorosariod@accuweather.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('OCJ-921', 'Scole', 'Lorri', '253-535-1938', 'lscolee@yellowbook.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('PKV-829', 'Erley', 'Donnamarie', '246-142-4554', 'derleyf@yolasite.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('KCK-737', 'Witul', 'Dasha', '865-337-5763', 'dwitulg@rediff.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('ASS-776', 'Bunney', 'Norby', '536-513-8274', 'nbunneyh@sina.com.cn');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('YEB-219', 'Enion', 'Liana', '473-315-2419', 'lenioni@vistaprint.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('DUT-932', 'Murrum', 'Verla', '690-338-2204', 'vmurrumj@wsj.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('KAI-598', 'Cordner', 'Jennette', '260-802-6657', 'jcordnerk@drupal.org');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('GLG-157', 'Jako', 'Jacquetta', '315-342-5131', 'jjakol@bloglovin.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('ZAO-714', 'Itzkin', 'Bradney', '682-464-2119', 'bitzkinm@fda.gov');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('SKQ-125', 'McHarry', 'Alexis', '865-917-9270', 'amcharry0@va.gov');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('GBG-377', 'Oley', 'Tod', '424-575-6018', 'toley1@live.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('NAF-606', 'Aingel', 'Melisenda', '969-903-2484', 'maingel2@amazon.de');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('CUB-594', 'Northway', 'Jesselyn', '942-214-0919', 'jnorthway3@ustream.tv');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('SFQ-539', 'Straughan', 'Audie', '961-473-9823', 'astraughan4@jiathis.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('EPT-908', 'Borrowman', 'Johnny', '496-704-6183', 'jborrowman5@lulu.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('ACY-980', 'Woodington', 'Calley', '435-731-4064', 'cwoodington6@marketwatch.com');
+insert into customers_by_vehicle (reg_no, sname, fname, phone, email) values ('UPV-105', 'Dot', 'Domeniga', '457-994-3199', 'ddot7@free.fr');
+
+
+insert into shops (city, address, shop_id, phone, email) values ('Jyväskylä', 'Koivupurontie 10', uuid(), '040-123-4567', 'koivupuro@supmechs.fi');
+insert into shops (city, address, shop_id, phone, email) values ('Tohmajärvi', 'Tohmantie 44', uuid(), '050-156-1212', 'tohmajarvi@supmechs.fi');
+
+TOHMA_ID == 855eb410-6d64-4374-8a11-609a37169afe
+JKL ID == 3a3dc500-ef33-43a1-989e-dc47e9473534
+
+
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Mechanic', 'James', 'Bond', uuid(), '2022-01-01', '2022-08-01', 'Fulltime', {'Aston Martin', 'Jaguar'}, '3a3dc500-ef33-43a1-989e-dc47e9473534');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Mechanic', 'John', 'Smith', uuid(), '2022-01-01', '2022-10-01', 'Part-time', {'Chevrolet', 'Toyota', 'Honda'}, '3a3dc500-ef33-43a1-989e-dc47e9473534');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Mechanic', 'Mark', 'Thomas', uuid(), '2022-06-01', '2022-12-01', 'Fulltime', {'GMC', 'Honda'}, '855eb410-6d64-4374-8a11-609a37169afe');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Mechanic', 'Thomas', 'Dean', uuid(), '2022-08-21', '2023-01-01', 'Part-time', {'Lamborghini', 'Merced-Maybach', 'Ferrari'}, '855eb410-6d64-4374-8a11-609a37169afe');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Mechanic', 'Dean', 'Matthews', uuid(), '2022-09-04', '2023-03-01', 'Trainee', {'BMW', 'Audi', 'Volvo'}, '855eb410-6d64-4374-8a11-609a37169afe');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Mechanic', 'Jill', 'Hogan', uuid(), '2022-11-04', null, 'Fulltime', {'Volvo', 'Austin', 'Audi'}, '3a3dc500-ef33-43a1-989e-dc47e9473534');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Mechanic', 'Jill', 'Howitz', uuid(), '2022-12-01', null, 'Trainee', {'Audi', 'Honda', 'BMW', 'Volkswagen'}, '3a3dc500-ef33-43a1-989e-dc47e9473534');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Mechanic', 'Diane', 'Johnson', uuid(), '2023-01-10', null, 'Part-time', {'Pontiac', 'Chevrolet', 'Oldsmobile', 'GMC', 'Dodge'}, '3a3dc500-ef33-43a1-989e-dc47e9473534');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Mechanic', 'Malik', 'Brett', uuid(), '2023-03-01', null, 'Fulltime', {'Honda', 'Toyota', 'Suzuki', 'Mitsubishi'}, '855eb410-6d64-4374-8a11-609a37169afe');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Mechanic', 'Jennifer', 'Garrets', uuid(), '2023-04-01', null, 'Fulltime', {'Mercedes-Maybach', 'Rolls-Royce', 'Bentley', 'Genesis'}, '855eb410-6d64-4374-8a11-609a37169afe');
+
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Customer Service', 'Joanne', 'Gane', uuid(), '2022-01-01', '2022-06-01', 'Fulltime', null, '3a3dc500-ef33-43a1-989e-dc47e9473534');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Customer Service', 'Jo', 'Johns', uuid(), '2022-01-01', '2022-10-01', 'Fulltime', null, '3a3dc500-ef33-43a1-989e-dc47e9473534');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Customer Service', 'David', 'Bondesque', uuid(), '2022-04-01', '2022-11-01', 'Part-time', null, '855eb410-6d64-4374-8a11-609a37169afe');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Customer Service', 'Dianne', 'Lopez', uuid(), '2022-05-01', null, 'Fulltime', null, '3a3dc500-ef33-43a1-989e-dc47e9473534');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Customer Service', 'Mark', 'Estebar', uuid(), '2022-07-01', null, 'Trainee', null, '3a3dc500-ef33-43a1-989e-dc47e9473534');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Customer Service', 'Mike', 'Scarface', uuid(), '2022-06-01', null, 'Fulltime', null, '3a3dc500-ef33-43a1-989e-dc47e9473534');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Customer Service', 'Michael', 'Jordan', uuid(), '2022-11-01', null, 'Fulltime', null, '855eb410-6d64-4374-8a11-609a37169afe');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Customer Service', 'Mona', 'Lisa', uuid(), '2023-02-01', null, 'Part-time', null, '855eb410-6d64-4374-8a11-609a37169afe');
+
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('HR', 'Mona', 'Lisaesque', uuid(), '2022-05-01', '2022-05-01', 'Fulltime', null, '3a3dc500-ef33-43a1-989e-dc47e9473534');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('HR', 'Michelle', 'Obama', uuid(), '2022-07-01', '2022-09-01', 'Fulltime', null, '855eb410-6d64-4374-8a11-609a37169afe');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('HR', 'Michel', 'Obamna', uuid(), '2022-11-01', null, 'Fulltime', null, '3a3dc500-ef33-43a1-989e-dc47e9473534');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('HR', 'Mitch', 'Ness', uuid(), '2023-02-01', null, 'Part-time', null, '855eb410-6d64-4374-8a11-609a37169afe');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('HR', 'Mitch', 'Pond', uuid(), '2023-03-01', null, 'Fulltime', null, '3a3dc500-ef33-43a1-989e-dc47e9473534');
+
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Marketing', 'Lily', 'Jordan', uuid(), '2022-03-01', '2022-04-01', 'Fulltime', null, '3a3dc500-ef33-43a1-989e-dc47e9473534');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Marketing', 'Jack', 'Black', uuid(), '2022-05-01', '2022-07-01', 'Fulltime', null, '3a3dc500-ef33-43a1-989e-dc47e9473534');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Marketing', 'Gretchen', 'Coolguy', uuid(), '2022-08-01', '2022-09-01', 'Trainee', null, '855eb410-6d64-4374-8a11-609a37169afe');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Marketing', 'Gary', 'Fisherman', uuid(), '2022-08-20', '2022-11-01', 'Fulltime', null, '855eb410-6d64-4374-8a11-609a37169afe');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Marketing', 'Nick', 'Okei', uuid(), '2022-10-01', null, 'Part-time', null, '3a3dc500-ef33-43a1-989e-dc47e9473534');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Marketing', 'Wilson', 'Smith', uuid(), '2022-11-01', null, 'Fulltime', null, '3a3dc500-ef33-43a1-989e-dc47e9473534');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Marketing', 'William', 'Shakespeare', uuid(), '2023-03-01', null, 'Fulltime', null, '855eb410-6d64-4374-8a11-609a37169afe');
+insert into employees_by_role (role, fname, sname, employee_id, start_date, end_date, employment_type, specialty, shop_id) values ('Marketing', 'Will', 'Smith', uuid(), '2023-04-01', null, 'Trainee', null, '855eb410-6d64-4374-8a11-609a37169afe');
+
+
+
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('ESW-611', '2022-01-10', 'Repair w/ inspection', 4639.85, null, 'Pass', {'fname': 'James', 'sname': 'Bond'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('YWH-785', '2022-01-19', 'Inspection', 100.00, null, 'Pass', {'fname' : 'James', 'sname' : 'Bond'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('UTD-972', '2022-01-25', 'Repair', 9424.02, null, null, {'fname' : 'John', 'sname' : 'Smith'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('RUF-501', '2022-02-14', 'Repair', 17144.74, null, null, {'fname' : 'John', 'sname' : 'Smith'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('MSC-273', '2022-03-04', 'Repair w/ inspection', 11029.65, 'Hylätty: Jarrujärjestelmät, Käyttöjarrun dynamometritesti, (1.2) Takajarru, Laahaa, tarkasta myös seisontajarru, Takana vas. ja oik.', 'Fail', {'fname' : 'John', 'sname' : 'Smith'});
+
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('KTW-779', '2022-03-22', 'Inspection', 100.00, 'Hylätty: Muut laitteet ja varusteet, Voimansiirto, (6.1.7) Kardiaaniakselin nivel, Välyksellinen, Edessä.,
+Hylätty: Akselistot, pyörät ja jousitus, Etuakselisto, (5.1.3) Etupyörän laakerointi, Epämääräinen tai asiaankuulumaton ääni, Vasemmalla.', 'Fail', {'fname' : 'James', 'sname' : 'Bond'});
+
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('LRJ-604', '2022-04-19', 'Repair w/ inspection', 17334.1, 'Hylätty: Ohjauslaitteet, Ohjausnivelet ja -tangot, (2.1.3) Rengas, Kudosvaurio, rikkoutumisvaara, Oikealla takana.', 'Fail', {'fname' : 'James', 'sname' : 'Bond'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('WWP-865', '2022-04-28', 'Repair w/ inspection', 1461.55, null, 'Pass', {'fname' : 'James', 'sname' : 'Bond'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('NAG-721', '2022-05-12', 'Inspection', 100.00, null, 'Pass', {'fname' : 'John', 'sname' : 'Smith'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('RSD-776', '2022-05-29', 'Repair', 3794.51, null, null, {'fname' : 'John', 'sname' : 'Smith'});
+
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('ESH-479', '2022-06-06', 'Inspection', 100.00, 'Hylätty: Ympäristöhaitat, pakokaasupäästöt, CO-pitoisuus yli 6%.', 'Fail', {'fname' : 'Mark', 'sname' : 'Thomas'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('RVN-177', '2022-06-12', 'Repair', 18190.26, null, null, {'fname' : 'Mark', 'sname' : 'Thomas'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('WJA-635', '2022-06-30', 'Repair w/ inspection', 14299.5, null, 'Pass', {'fname' : 'James', 'sname' : 'Bond'});
+
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('YSK-123', '2022-07-04', 'Inspection', 100.00, 'Hylätty: Ympäristöhaitat, Öljy- ja nestevuodot (15.5) Öljypohja, öljyinen.,
+Hylätty: Alusta ja ohjaus, Pakoputkisto (6.1.2), Vaadittava katalysaattori puuttuu.', 'Fail', {'fname' : 'Mark', 'sname' : 'Thomas'});
+
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('OCJ-921', '2022-07-16', 'Repair', 8714.09, null, null, {'fname' : 'Mark', 'sname' : 'Thomas'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('PKV-829', '2022-07-22', 'Repair', 8142.85, null, null, {'fname' : 'John', 'sname' : 'Smith'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('KCK-737', '2022-07-25', 'Inspection', 100.00, null, 'Pass', {'fname' : 'John', 'sname' : 'Smith'});
+
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('ASS-776', '2022-08-02', 'Inspection', 100.00, 'Hylätty: Ohjauslaitteet, Ohjausnivelet ja -tangot, (2.1.3) Rengas, Kudosvaurio, rikkoutumisvaara, Oikealla takana.', 'Fail', {'fname' : 'Thomas', 'sname' : 'Dean'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('YEB-219', '2022-08-10', 'Inspection', 100.00, 'Hylätty: Akselistot, pyörät ja jousitus, Etuakselisto, (5.1.3) Etupyörän laakerointi, Välyksellinen, Vasemmalla.,
+Hylätty: Jarrujärjestelmät, Käyttöjarrun dynamometritesti, (1.2) Takajarru, Laahaa, tarkasta myös seisontajarru, Takana vas. ja oik.', 'Fail', {'fname' : 'Thomas', 'sname' : 'Dean'});
+
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('DUT-932', '2022-08-15', 'Inspection', 100.00, null, 'Pass', {'fname' : 'Mark', 'sname' : 'Thomas'});
+
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('KAI-598', '2022-09-01', 'Inspection', 100.00, 'Hylätty: Alusta ja kori, Alustan kotelot ja pohjalevy, (6.1.1) Pyörän kotelo, Ruostevaurioitunut, Vasemmalla edessä, Iskarin iskarin vierestä ja joustintuen torni ylhäällä, ulkoreuna.,
+', 'Fail', {'fname' : 'Mark', 'sname' : 'Thomas'});
+
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('GLG-157', '2022-09-06', 'Repair', 4518.13, null, null, {'fname' : 'Dean', 'sname' : 'Matthews'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('ZAO-714', '2022-09-13', 'Inspection', 100.00, null, 'Pass', {'fname' : 'Dean', 'sname' : 'Matthews'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('SKQ-125', '2022-09-14', 'Inspection', 100.00, null, 'Pass', {'fname' : 'Dean', 'sname' : 'Matthews'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('GBG-377', '2022-09-27', 'Repair w/ inspection', 19037.68, null, 'Pass', {'fname' : 'Mark', 'sname' : 'Thomas'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('NAF-606', '2022-09-30', 'Repair', 5932.56, null, null, {'fname' : 'Mark', 'sname' : 'Thomas'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('CUB-594', '2022-10-06', 'Repair', 11879.33, null, null, {'fname' : 'Thomas', 'sname' : 'Dean'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('SFQ-539', '2022-10-17', 'Repair', 6735.71, null, null, {'fname' : 'Thomas', 'sname' : 'Dean'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('EPT-908', '2022-10-25', 'Repair', 7049.37, null, null, {'fname' : 'Dean', 'sname' : 'Matthews'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('ACY-980', '2022-11-01', 'Inspection', 100.00, 'Hylätty: Ympäristöhaitat, Öljy- ja nestevuodot (15.5) Öljypohja, öljyinen. Hylätty: Ympäristöhaitat, pakokaasupäästöt, CO-pitoisuus yli 6%.', 'Fail', {'fname' : 'Dean', 'sname' : 'Matthews'});
+
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('UPV-105', '2022-11-10', 'Repair', 739.9, null, null, {'fname' : 'Jill', 'sname' : 'Hogan'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('WWP-865', '2022-11-15', 'Inspection', 100.00, 'Hylätty: Ohjauslaitteet, Ohjausnivelet ja -tangot, (4.1.1) Ajovaloumpio, Samentunut, Vasemmalla ja oikealla. 
+Hylätty: Alusta ja kori, Runko, (6.1.1) Poikittainen runkopalkki, Ruostevaurioitunut, vasemmalla.', 'Fail', {'fname' : 'Jill', 'sname' : 'Hogan'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('NAG-721', '2022-12-15', 'Repair', 16875.71, null, null, {'fname' : 'Jill', 'sname' : 'Howitz'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('RSD-776', '2023-01-23', 'Repair', 15507.29, null, null, {'fname' : 'Jill', 'sname' : 'Howitz'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('ESH-479', '2023-02-14', 'Repair', 2944.7, null, null, {'fname' : 'Diane', 'sname' : 'Johnson'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('RVN-177', '2023-02-22', 'Repair', 15522.02, null, null, {'fname' : 'Diane', 'sname' : 'Johnson'});
+insert into checkups_by_vehicle (reg_no, date_submitted, reason, cost, details, result, employee) values ('WJA-635', '2023-03-10', 'Inspection', 100.00, null, 'Pass', {'fname' : 'Malik', 'sname' : 'Brett'});
+

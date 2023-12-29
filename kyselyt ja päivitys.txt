@@ -1,0 +1,32 @@
+Q1: Hae ajoneuvoa merkin mukaan
+SELECT * FROM vehicles_by_make WHERE make = 'MERKKI';
+	Voidaan hakea yksilöivämmin antamalla vielä rekisterinumero
+		SELECT * FROM vehicles_by_make WHERE make = 'MERKKI' AND reg_no = 'REKISTERINUMERO';
+	
+Q2: Hae ajoneuvon omistajan tiedot
+SELECT fname, sname, phone, email FROM customers_by_vehicle WHERE reg_no = 'REKISTERINUMERO';
+
+Q3: Hae ajoneuvon korjaus-/katsastustiedot
+SELECT reg_no, date_submitted, reason, cost, details, result FROM checkups_by_vehicle WHERE reg_no = 'REKISTERINUMERO';
+
+Q4: Hae katsastuksen/korjauksen toetuttaneen mekaanikon tiedot
+SELECT employee FROM checkups_by_vehicle WHERE reg_no = 'REKISTERINUMERO';
+
+Q5: Hae tieto työntekijöistä roolin mukaan
+SELECT * FROM employees_by_role WHERE role = 'ROOLI';
+
+Q6: Hae pajan tiedot
+SELECT * FROM shops WHERE city = 'KAUPUNKI';
+
+PÄIVITYS TARPEET
+
+U1: Työntekijän työsuhde muuttuu tai päättyy
+	Työsuhteen muutos (tässä täysipäiväisestä osa-aikaiseksi)
+UPDATE employees_by_role SET employment_type = 'Part-time' WHERE role = 'ROOLI' AND fname = 'ETUNIMI' AND sname = 'SUKUNIMI' AND employee_id =  ID;
+	Työsuhteen päättyminen
+UPDATE employees_by_role SET end_date = 'PÄÄTTYMISPÄIVÄ' WHERE role = 'ROOLI' AND fname = 'ETUNIMI' AND sname = 'SUKUNIMI' AND employee_id =  ID;
+
+U2: Uusi ajoneuvo tulee katsastukseen/korjaukseen
+INSERT INTO vehicles_by_make (make, reg_no, year, model, type) VALUES ('MERKKI', 'REKISTERINUMERO', 'VUOSI', 'MALLI', 'TYYPPI');
+Lisätään sitten myös tieto ajoneuvon omistajasta
+INSERT INTO customers_by_vehicle (reg_no, sname, fname, phone, email) VALUES ('REKISTERINUMERO', 'SUKUNIM', 'ETUNIMI', 'PUHELIN', 'MEILI [OPTIONAL]')
